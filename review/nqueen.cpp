@@ -1,19 +1,19 @@
 #include <stdio.h>
 
 int qLoc[9];
-int userinput;
+int input;
 int cnt = 0;
 
-void queen(int x, int y){
+void placeQ(int x, int y){
     int i, j;
     qLoc[x] = y;
 
-    if(x == userinput-1){
+    if(x == input-1){
         cnt++;
         return;
     }
 
-    for(i = 0; i < userinput; i++){
+    for(i = 0; i < input; i++){
         int status = 1;
 
         for(j = 0; j <= x; j++){
@@ -30,17 +30,17 @@ void queen(int x, int y){
             }
         }
 
-        if(status == 1) queen(x+1, i);
+        if(status == 1) placeQ(x+1, i);
     }
 
     return;
 }
 
 int main(void){
-    scanf("%d", &userinput);
+    scanf("%d", &input);
 
-    for(int k = 0; k < userinput; k++){
-        queen(0,k);
+    for(int i = 0; i < input; i++){
+        placeQ(0,i);
     }
 
     printf("%d\n", cnt);
