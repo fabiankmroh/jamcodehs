@@ -1,96 +1,59 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <queue>
-#include <memory.h>
+#include <math.h>
 
 using namespace std;
 
-int choo[7] = {1,3,9,27,81,243,729};
-int input;
+int userinput;
+int ans[7];
+int p[7] = {1,3,9,27,81,243,729};
+int l[7];
+int r[7];
 
-typedef struct weight{
-    int w[7];
-    int l;
-    int r;
-    int pN;
-} w;
-
-void print(w scale){
+void display(){
     int i;
-    
-    printf("%d ", input);
 
-    // Left Side
+    printf("%d ", userinput);
     for(i = 0; i < 7; i++){
-        if(scale.w[i] == 1){
-            printf("%d ", choo[i]);
+        if(ans[i] == 1){
+            printf("%d ", p[i]);
         }
-    }
+    }    
 
     printf("0 ");
 
-    // Right Side
     for(i = 0; i < 7; i++){
-        if(scale.w[i] == 2){
-            printf("%d ", choo[i]);
+        if(ans[i] == 2){
+            printf("%d ", p[i]);
         }
     }
-    
-    printf("\n");
 
+    printf("\n");
     return;
 }
 
-int main(void){
-    queue<w> s;
-    scanf("%d", &input);
-    int d[7] = {0,0,0,0,0,0,0};
-    w first;
-    memcpy(first.w,d,sizeof(d));
-    first.l=input;
-    first.r=0;
-    first.pN=0;
-    s.push(first); 
-    
-    while(!s.empty()){
-        int cL = s.front().l;
-        int cR = s.front().r;
-        int cN = s.front().pN;
-        int n[7];
-        memcpy(n, s.front().w, sizeof(n));
-        if(cL == cR){
-            print(s.front());
-            break;
-        }
-        if(cN == 7){
-            s.pop();
-            continue;
-        }
-        s.pop();
-        n[cN] = 0; // Blank;
-        w next;
-        memcpy(next.w,n,sizeof(n)); // Creating next struct
-        next.l=cL;
-        next.r=cR;
-        next.pN=cN+1;
-        s.push(next);
-
-        n[cN] = 1; // Left
-        memcpy(next.w,n,sizeof(n)); // Creating next struct
-
-        next.l=cL+choo[cN]; 
-        next.r=cR;
-        next.pN=cN+1;
-        s.push(next);
-
-        n[cN] = 2; // Right
-        
-        memcpy(next.w,n,sizeof(n)); // Creating next struct
-
-        next.l=cL; 
-        next.r=cR+choo[cN];
-        next.pN=cN+1;
-        s.push(next);
-        
+void scale(int l, int r, int wN){
+    if(l == r){
+        display();
+        return;
     }
 
+    if(wN == 7) return;
+
+    ans[wN] = 1;
+    scale(l + p[wN], r, wN+1);
+
+    ans[wN] = 2;
+    scale(l, r + p[wN], wN+1);
+
+    ans[wN] = 0;
+    scale(l, r, wN+1);
+
+}
+
+int main(void){
+    scanf("%d", &userinput);
+    scale(userinput, 0, 0);
+    return 0;
 }
