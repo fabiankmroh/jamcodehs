@@ -7,20 +7,14 @@ int stairs[301] = { 0, };
 int maxScore[301] = { 0, };
 
 int getMaxScore(int n){
-    if(n > 0){
-        if(maxScore[n] > 0){
-            return maxScore[n];
-        }
+    maxScore[1] = stairs[1];
+    maxScore[2] = stairs[1] + stairs[2];
 
-        int upOneScore, upTwoScore;
-        upOneScore = getMaxScore(n-3) + stairs[n-1];
-        upTwoScore = getMaxScore(n-2);
-        maxScore[n] = max(upOneScore, upTwoScore) + stairs[n];
-
-        return maxScore[n];
+    for(int i = 3; i <= n; i++){
+        maxScore[i] = max(maxScore[i-3] + stairs[i-1], maxScore[i-2]) + stairs[i];
     }
 
-    return 0;
+    return maxScore[n];
 }
 
 int main(void){

@@ -13,6 +13,8 @@ int getMaxScore(int n){
 
         return max(upOneScore, upTwoScore) + stairs[n];
     }
+    
+    return 0;
 }
 
 int main(void){
