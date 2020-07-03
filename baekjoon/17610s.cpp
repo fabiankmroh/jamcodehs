@@ -24,6 +24,9 @@ void createWeight(int wT, int wN){
         return;
     }
     
+    for(i = 0; i < wN; i++){
+        
+    }
     createWeight(wT+weight[wN+1], wN+1);
     if(wT-weight[wN+1] > 0)
         createWeight(wT-weight[wN+1], wN+1);
