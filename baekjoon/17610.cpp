@@ -1,58 +1,40 @@
 #include <stdio.h>
-#define DEBUG   1
+#include <stdlib.h>
 
-int k, sum;
+using namespace std;
+int possible[2600001] = { 0, };
+int numOfWeight, sum = 0;
+int ans = 0;
 int weight[13];
-int assign[13];
-int available[1000] = { 0, };
-int i, j;
 
-void scale(int wT, int wN){
-    if(wT < 0)
+void solve(int left, int right, int n){
+    possible[abs(left-right)] = 1;
+
+    if(n == numOfWeight)
         return;
-    if(wN == k-1)
-        return;
-
-    if(DEBUG)
-        printf("Weight #: %d\n", wN);
-
-    available[wT] = 1;
-
-    assign[wN+1] = 0;
-    if(DEBUG){
-        printf("0 entered\n");
-    }
-    scale(wT, wN+1);
-        
-    assign[wN+1] = 1;
-    if(DEBUG)
-        printf("1 entered\n");
-    scale(wT+weight[wN+1], wN+1);
-
-    assign[wN+1] = 2;
-    if(DEBUG)
-        printf("2 entered\n");
-    scale(wT-weight[wN+1], wN+1);
+    
+    solve(left+weight[n], right, n+1);
+    solve(left, right+weight[n], n+1);
+    solve(left, right, n+1);
 }
 
 int main(void){
-    scanf("%d", &k);
+    int i, j;
+    scanf("%d", &numOfWeight);
 
-    for(i = 0; i < k; i++){
+    for(i = 0; i < numOfWeight; i++){
         scanf("%d", &weight[i]);
         sum += weight[i];
     }
 
-    available[sum] = 1;
-    
-    if(DEBUG){
-        printf("S = %d\n", sum);
+    solve(0, 0, 0);
 
-        for(i = 0; i < k; i++){
-            printf("%d ", weight[i]);
-        }
-
-        printf("\n\n");
+    for(i = 1; i <= sum; i++){
+        if(possible[i] == 0)
+            ans++;
     }
-    scale(0, 0);
+
+    printf("%d\n", ans);
+
+    return 0;
 }

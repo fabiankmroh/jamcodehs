@@ -1,64 +1,69 @@
 #include <stdio.h>
-#include <vector>
-#define DEBUG   1
+#define MIDDLE  260000
 
-int available[100] = { 0, };
+using namespace std;
+
 int weight[13];
-int nW, i, cnt = 0;
+int possible[5200002] = { 0, };
+int i, j;
+int k, ans = 0;
 int sum = 0;
-
-void createWeight(int wT, int wN){
-    if(DEBUG){
-        printf("createWeight(%d, %d)\n", wT, wN);
-    }
-
-    if(available[wT] == 1){
-        return;
-    }
-    
-    available[wT] = 1;
-    
-    if(wN == nW-1){
-        if(DEBUG)
-            printf("RETURN called\n");
-        return;
-    }
-    
-    for(i = 0; i < wN; i++){
-        
-    }
-    createWeight(wT+weight[wN+1], wN+1);
-    if(wT-weight[wN+1] > 0)
-        createWeight(wT-weight[wN+1], wN+1);
-    createWeight(wT, wN+1);
-}
 
 void print(void){
     for(i = 1; i <= sum; i++){
-        if(available[i] == 0){
-            printf("Weight: %d\n", i);
-            cnt++;
+        printf("possible[%d] = %d\n", i, possible[i+sum]);
+    }
+    printf("\n\n");
+
+    return;
+}
+
+void makeOne(int n){
+    for(j = MIDDLE-sum; j <= MIDDLE+sum; j++){
+        if(possible[j] < n && possible[j] > 0){
+            possible[j+weight[n]] = n;
+            printf("possible[%d] = %d\n", j+weight[n], n);
+
+            possible[j-weight[n]] = n;
+            printf("possible[%d] = %d\n", j-weight[n], n);
         }
     }
-    printf("%d\n", cnt);
+    printf("\n");
+    print();
+
+    return;
 }
 
 int main(void){
-    scanf("%d", &nW);
-    if(DEBUG)
-        printf("Number of Weights: %d\n", nW);
+    scanf("%d", &k);
 
-    for(i = 0; i < nW; i++){
+    for(i = 0; i < k; i++){
         scanf("%d", &weight[i]);
         sum += weight[i];
     }
+    
+    possible[weight[0]+sum] = 1;
+    printf("possible[%d] = %d\n", weight[0], 1);
 
-    if(DEBUG)
-        printf("First function called\n");
-    createWeight(0,0);
-    createWeight(weight[0],0);
+    possible[weight[0]-weight[1]+sum] = 1;
+    printf("possible[%d] = %d\n", weight[0]-weight[1], 1);
 
-    if(DEBUG)
-        printf("Print function called\n");
+    possible[weight[0]+weight[1]+sum] = 1;
+    printf("possible[%d] = %d\n", weight[0]+weight[1], 1);
+
+    printf("\n\n");
+
     print();
+
+    for(i = 2; i < k; i++){
+        printf("makeOne(%d)\n", i);
+        makeOne(i);
+    }
+
+    for(i = 1; i <= sum; i++){
+        if(possible[i] == 0)
+            ans++;
+    }
+
+    printf("%d\n", ans);
 }
