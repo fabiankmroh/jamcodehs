@@ -10,10 +10,11 @@ int holes, i;
 int rob1pos, rob2pos;
 int s, e, l;
 int ans = 100000000;
+int stuck[100001] = { 0, };
 
 void print(void){
     printf("# of Paths: %d\n", holes-1);
-    printf("# of Vector: %d\n", pipes.size());
+    printf("# of Vector: %lu\n", pipes.size());
 
     for(i = 0; i < 2*(holes-1); i++){
         printf("s: %d e: %d l: %d\n", pipes[i].first, pipes[i].second.second, pipes[i].second.first);
@@ -23,12 +24,12 @@ void print(void){
 }
 
 void solve(int cPos, int pPos, int dist, int far){
-    printf("solve(%d, %d, %d, %d)\n", cPos, pPos, dist, far);
     int s, l, e;
+    bool makhim = true;
     if(cPos == rob2pos){
         printf("End case\n");
         int a = dist-far;
-        printf("%d = %d-%d", a, dist, far);
+        printf("%d = %d-%d\n", a, dist, far);
 
         if(ans > a)
             ans = a;
@@ -36,13 +37,17 @@ void solve(int cPos, int pPos, int dist, int far){
         return;
     }
     
+    printf("loop in\n");
     for(i = 0; i < 2*(holes-1); i++){
         s = pipes[i].first;
         l = pipes[i].second.first;
         e = pipes[i].second.second;
 
+        printf("%d %d %d\n", s, l, e);
+
         if(cPos == s){
-            if(e != pPos){
+            makhim = false;
+            if(e != pPos && stuck[e] == 0){
                 if(far < l)
                     far = l;
 
@@ -52,11 +57,20 @@ void solve(int cPos, int pPos, int dist, int far){
                 continue;
             }
         }
+        
+        if(makhim == true){
+            stuck[i] = 1;
+            return;
+        }
 
-        if(pipes[i+1].first > cPos)
+        if(pipes[i+1].first > cPos){
+            printf("solve(%d, %d, %d, %d)\n", cPos, pPos, dist, far);
+            printf("i: %d\n Break\n", i);
             break;
+        }
     }
 
+    printf("No end case. Return\n");
     return;
 }
 
@@ -78,9 +92,7 @@ int main(void){
     sort(pipes.begin(), pipes.end());
     printf("Sort Complete\n");
 
-    print();
-
-    // solve(rob1pos, rob1pos, 0, 0);
+    solve(rob1pos, rob1pos, 0, 0);
 
     printf("ans: %d\n", ans);
 
