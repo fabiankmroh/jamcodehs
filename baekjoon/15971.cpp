@@ -59,7 +59,7 @@ void solve(int cPos, int pPos, int dist, int far){
         }
         
         if(makhim == true){
-            stuck[i] = 1;
+            stuck[i] = 1;$
             return;
         }
 
@@ -92,7 +92,9 @@ int main(void){
     sort(pipes.begin(), pipes.end());
     printf("Sort Complete\n");
 
-    solve(rob1pos, rob1pos, 0, 0);
+    print();
+
+    // solve(rob1pos, rob1pos, 0, 0);
 
     printf("ans: %d\n", ans);
 
