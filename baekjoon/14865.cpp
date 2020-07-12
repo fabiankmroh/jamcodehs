@@ -1,104 +1,34 @@
-#include <iostream>
+#include <stdio.h>
 #include <vector>
 #include <algorithm>
-#include <stack>
 
 using namespace std;
 
-typedef long long ll;
+vector < pair<int, int> > v;
 
-typedef struct{
-    int x, y;
-} point;
+int vertex[1000000][2];
+int N, i;
+int start, finish;
 
-typedef struct
-{
-    int x, idx;
-} mountainElem;
 
-typedef struct
-{
-    int idx;
-    bool have;
-} stackElem;
+int main(void){
+    scanf("%d", &N);
 
-bool compare (point a, point b)
-{
-    if (a.y < b.y)
-        return true;
-    else if (a.y == b.y)
-    {
-        if (a.x < b.x)
-            return true;
+    for(i = 0; i < N; i++){
+        scanf("%d %d", &vertex[i][0], &vertex[i][1]);
     }
-    
-    return false;
-}
-
-bool compare2 (mountainElem a, mountainElem b)
-{
-    if (a.x < b.x)
-    return true;
-    return false;
-}
-
-int main()
-{
-    int n, size, second = 1, idx = 1, ans1 = 0, ans2 = 0;
-    vector <point> v;
-    vector <mountainElem> mountain;
-    stack <stackElem> st;
-    
-    scanf("%d", &n);
-    
-    for (int i = 1; i <= n; i++)
-    {
-        int x, y;
-        scanf("%d %d", &x, &y);
-        v.push_back({x, y});
-    }
-    
-    rotate(v.begin(), min_element(v.begin(), v.end(), compare), v.end());
-    v.push_back(v.front());
-    
-    for (int i = 0; i < n; i++)
-    {
-        if ((ll)v[i].y * v[i+1].y < 0)
-        {
-            mountain.push_back({v[i].x, idx});
-            second++;
-            if (second % 2)
-                idx++;
-        }
-    }
-    
-    sort(mountain.begin(), mountain.end(), compare2);
-    size = mountain.size();
-    
-    for (int i = 0; i < size; i++)
-    {
-        int idx = mountain[i].idx;
+    vertex[N][0] = vertex[0][0];
+    vertex[N][1] = vertex[0][1];
         
-        if (st.empty())
-        {
-            st.push({idx, false});
-            ans1++;
-        }
-        else{
-            if (st.top().idx == idx)
-            {
-                if (!st.top().have)
-                    ans2++;
-                st.pop();
-            }
-            else
-            {
-                st.top().have = true;
-                st.push({idx, false});
-            }
+    for(i = 1; i <= N; i+=2){
+        if(vertex[i][1] == vertex[i+1][1] && vertex[i][1] > 0 && vertex[i+1][1] > 0){
+            v.push_back(make_pair(vertex[i][0], vertex[i+1][0]));
         }
     }
-    
-    printf("%d %d", ans1, ans2);
-    return 0;
+
+    printf("\n\n");
+
+    for(i = 0; i < v.size(); i++){
+        printf("%d %d\n", v[i].first, v[i].second);
+    }
 }
