@@ -6,10 +6,26 @@ using namespace std;
 
 vector < pair<int, int> > v;
 
+int a1 = 0;
+int a2 = 0;
+
 int vertex[1000000][2];
 int N, i;
 int start, finish;
 
+void print(void){
+    printf("\n\n");
+
+    for(i = 0; i < v.size(); i++){
+        printf("%d %d\n", v[i].first, v[i].second);
+    }
+}
+
+void solve(void){
+    int s
+
+
+}
 
 int main(void){
     scanf("%d", &N);
@@ -22,13 +38,25 @@ int main(void){
         
     for(i = 1; i <= N; i+=2){
         if(vertex[i][1] == vertex[i+1][1] && vertex[i][1] > 0 && vertex[i+1][1] > 0){
-            v.push_back(make_pair(vertex[i][0], vertex[i+1][0]));
+            if(vertex[i][0] < vertex[i][1])
+                v.push_back(make_pair(vertex[i][0], vertex[i+1][0]));
+            else
+                v.push_back(make_pair(vertex[i+1][0], vertex[i][0]));
         }
     }
 
-    printf("\n\n");
+    print();
+
+    sort(v.begin(), v.end());
+    printf("Sort Complete\n");
+
+    print();
 
     for(i = 0; i < v.size(); i++){
-        printf("%d %d\n", v[i].first, v[i].second);
+        solve(i);
     }
+
+    printf("%d %d\n", a1, a2);
+
+    return 0;
 }
