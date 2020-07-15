@@ -21,10 +21,10 @@ void print(void){
     }
 }
 
-void solve(void){
-    int s
-
-
+void solve(int n){
+    for(i = 0; i < v.size(); i++){
+        if(v[i].first < )
+    }
 }
 
 int main(void){
